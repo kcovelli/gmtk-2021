@@ -10,7 +10,6 @@
 script = ExtResource( 5 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 194.823, 58.6879 )
 
 [node name="Platform" parent="." instance=ExtResource( 1 )]
 position = Vector2( 557.683, 263.327 )
@@ -24,6 +23,13 @@ position = Vector2( 515.533, 175.179 )
 [node name="Box3" parent="." instance=ExtResource( 3 )]
 position = Vector2( 653.377, 28.8446 )
 
+[node name="RigidBody2D" parent="." instance=ExtResource( 3 )]
+position = Vector2( 707, 143 )
+
 [node name="LevelGeometry" parent="." instance=ExtResource( 4 )]
+position = Vector2( 385, 109 )
+
+[node name="TileMap" parent="LevelGeometry" index="0"]
+position = Vector2( -385, -109 )
 
 [editable path="LevelGeometry"]
