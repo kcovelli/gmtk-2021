@@ -19,4 +19,3 @@ func _ready():
 func _process(delta):
 	pb1.apply_central_impulse(pb1.position.direction_to(pb2.position) * strength)
 	pb2.apply_central_impulse(pb2.position.direction_to(pb1.position) * strength)
-	
