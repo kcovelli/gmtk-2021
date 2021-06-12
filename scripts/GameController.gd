@@ -1,7 +1,9 @@
 extends Node2D
 
-var dragging: bool = false
+var drag_mode: int = 0 # 0 while not dragging, 1 for create, 2 for cut
 var drag_start: Vector2
+var lash_create_colour: Color = Color(0, 255, 0)
+var lash_cut_colour: Color = Color(255, 0, 0)
 
 const lashing_scene: PackedScene = preload("res://scenes/Lashing.tscn")
 var lashed_from: NodePath # Keeps track of prev. object that was lashed from
@@ -15,23 +17,24 @@ func _ready():
 	$Box3.connect("lashed_to", self, "handle_lashed_to")
 
 func _unhandled_input(event):
-	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
+	if event is InputEventMouseButton:
+		
 		if event.pressed:
-			dragging = true
+			drag_mode = 1 if event.button_index == BUTTON_LEFT else 2
 			drag_start = event.position
 		else:
-			dragging = false
+			drag_mode = 0
 			update()
 			
-		print(event.position, dragging)
+		print(event.position, drag_mode)
 	
 
 func _draw():
-	if dragging:
-		draw_line(drag_start, get_global_mouse_position(), Color(255, 0, 0))
+	if drag_mode > 0:
+		draw_line(drag_start, get_global_mouse_position(), lash_create_colour if drag_mode == 1 else lash_cut_colour)
 		
 func _process(delta):
-	if dragging:
+	if drag_mode > 0:
 		update()
 
 func handle_lashed_from(path):
