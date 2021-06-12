@@ -25,6 +25,7 @@ func _unhandled_input(event):
 				lash_cut(drag_start, event.position)
 			drag_mode = 0
 			update() # calls _draw()
+			
 	elif event.is_action_pressed("slow_time"):
 		Engine.time_scale = 0.2
 	elif event.is_action_released("slow_time"):
@@ -36,22 +37,36 @@ func _draw():
 		
 func _process(_delta):
 	if drag_mode > 0:
-		if drag_mode == 1 and lashed_from:
+		if drag_mode == 1 and lashed_from: # draw lash create line starting from selected object
 			drag_start = lashed_from.position
 		update()
 
 func lash_cut(start: Vector2, end: Vector2):
+	# do raycast to see if cutting line intersects a lash
 	var space_state = get_world_2d().direct_space_state
+	var collision = null
+	var found_objs = []
 	
-	var collision = space_state.intersect_ray(start, end, [], globals.collision_layers['lashings'],  true, true)
-	if collision.size() > 0:
-		var lash_collider: Area2D = collision['collider']
-		get_tree().queue_delete(lash_collider.get_parent())
+	# keep doing raycasts until we don't intersect any lashes. intersect_ray() only returns the first collision
+	# so we have to do this multiple times if we want to cut more than one lash at a time. 
+	# there's probably a better way to do this but whatever
+	while true:
+		collision = space_state.intersect_ray(start, end, found_objs, globals.COLLISION_LAYERS['lashings'],  true, true)
+		if collision.size() > 0:
+			found_objs.append(collision['collider'])
+			get_tree().queue_delete(collision['collider'].get_parent())
+		else:
+			break
+		
+		if !globals.CUT_MULTIPLE_LASHINGS:
+			break
 	
+# signal handler for mouse click on object
 func handle_lashed_from(path):
 	lashed_from = get_node(path)
 	drag_mode = 1
 
+# signal handler for mouse release on object
 func handle_lashed_to(path):
 	if lashed_from == null:
 		return

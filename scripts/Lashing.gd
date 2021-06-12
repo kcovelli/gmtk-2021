@@ -31,7 +31,7 @@ func _ready():
 	var area = Area2D.new()
 	area.add_child(collider)
 	
-	area.collision_layer = globals.collision_layers['lashings']
+	area.collision_layer = globals.COLLISION_LAYERS['lashings']
 	area.collision_mask = 0
 	
 	add_child(area)
