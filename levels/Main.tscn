@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/Ground.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Box.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/LevelTemplate.tscn" type="PackedScene" id=4]
+
+[node name="Main" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 556.914, 135.601 )
+
+[node name="Platform" parent="." instance=ExtResource( 1 )]
+position = Vector2( 557.683, 263.327 )
+
+[node name="TileMap" type="TileMap" parent="."]
+format = 1
+
+[node name="Box" parent="." instance=ExtResource( 3 )]
+position = Vector2( 453.921, 188.208 )
+
+[node name="Box2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 462.149, 228.67 )
+
+[node name="LevelGeometry" parent="." instance=ExtResource( 4 )]
