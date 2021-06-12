@@ -27,7 +27,7 @@ texture = ExtResource( 1 )
 region_rect = Rect2( 0, 0, 10, 10 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2( 2, 2 )
+current = true
 
 [node name="GroundCheck" type="Area2D" parent="."]
 collision_mask = 14
