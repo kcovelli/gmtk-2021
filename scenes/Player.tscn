@@ -16,5 +16,5 @@ position = Vector2( -0.00147629, -12.1763 )
 texture = ExtResource( 1 )
 region_rect = Rect2( 0, 0, 10, 10 )
 
-[node name="InputController" type="Node" parent="."]
+[node name="Node2D" type="Node2D" parent="."]
 script = ExtResource( 2 )
