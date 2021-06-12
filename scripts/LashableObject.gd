@@ -1,4 +1,4 @@
-extends CollisionObject2D
+extends PhysicsBody2D
 
 signal lashed_from
 signal lashed_to
@@ -14,3 +14,4 @@ func _input_event(viewport, event, shape_idx):
 				emit_signal("lashed_from", get_path())
 			else:
 				emit_signal("lashed_to", get_path())
+			get_tree().set_input_as_handled()

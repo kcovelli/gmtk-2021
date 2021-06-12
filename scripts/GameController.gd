@@ -4,10 +4,9 @@ var drag_mode: int = 0 # 0 while not dragging, 1 for create, 2 for cut
 var drag_start: Vector2
 var lash_create_colour: Color = Color(0, 255, 0)
 var lash_cut_colour: Color = Color(255, 0, 0)
-var lashed_from_pb: PhysicsBody2D = null
 
 const lashing_scene: PackedScene = preload("res://scenes/Lashing.tscn")
-var lashed_from: NodePath # Keeps track of prev. object that was lashed from
+var lashed_from: PhysicsBody2D = null # Keeps track of prev. lashed object
 
 func _ready():
 	$Box1.connect("lashed_from", self, "handle_lashed_from")
@@ -24,8 +23,9 @@ func _unhandled_input(event):
 			if event.button_index == BUTTON_RIGHT:
 				drag_mode = 2
 			elif event.button_index == BUTTON_LEFT:
-				lashed_from = ""
-				lashed_from_pb = null
+				# Reset lashed_from since mouse was released on a non-lashable
+				# object (otherwise this mouse event would have been handled)
+				lashed_from = null
 			drag_start = event.position
 		else:
 			drag_mode = 0
@@ -40,25 +40,24 @@ func _draw():
 		
 func _process(delta):
 	if drag_mode > 0:
-		if drag_mode == 1 and lashed_from_pb:
-			drag_start = lashed_from_pb.position
+		if drag_mode == 1 and lashed_from:
+			drag_start = lashed_from.position
 		update()
 
 func handle_lashed_from(path):
-	lashed_from = path
-	lashed_from_pb = get_node(path)
+	lashed_from = get_node(path)
 	drag_mode = 1
 
 func handle_lashed_to(path):
-	if lashed_from == "":
+	if lashed_from == null:
 		return
 	
-	if lashed_from != path:
+	var from_path = lashed_from.get_path()
+	if from_path != path:
 		var lashing = lashing_scene.instance()
-		lashing.pb1_node_path = lashed_from
+		lashing.pb1_node_path = from_path
 		lashing.pb2_node_path = path
 		add_child(lashing)
 	
-	lashed_from = ""
-	lashed_from_pb = null
+	lashed_from = null
 	
