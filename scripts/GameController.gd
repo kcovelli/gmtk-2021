@@ -25,6 +25,10 @@ func _unhandled_input(event):
 				lash_cut(drag_start, event.position)
 			drag_mode = 0
 			update() # calls _draw()
+	elif event.is_action_pressed("slow_time"):
+		Engine.time_scale = 0.2
+	elif event.is_action_released("slow_time"):
+		Engine.time_scale = 1
 
 func _draw():
 	if drag_mode > 0:
@@ -44,9 +48,6 @@ func lash_cut(start: Vector2, end: Vector2):
 		var lash_collider: Area2D = collision['collider']
 		get_tree().queue_delete(lash_collider.get_parent())
 	
-	
-	
-
 func handle_lashed_from(path):
 	lashed_from = get_node(path)
 	drag_mode = 1
