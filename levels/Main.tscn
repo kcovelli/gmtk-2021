@@ -5,7 +5,7 @@
 [ext_resource path="res://scenes/Box.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/LevelTemplate.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scripts/GameController.gd" type="Script" id=5]
-[ext_resource path="res://scripts/Lashing.gd" type="Script" id=6]
+[ext_resource path="res://scenes/Lashing.tscn" type="PackedScene" id=6]
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 5 )
@@ -19,8 +19,8 @@ position = Vector2( 557.683, 263.327 )
 [node name="TileMap" type="TileMap" parent="."]
 format = 1
 
-[node name="Box" parent="." instance=ExtResource( 3 )]
-position = Vector2( 310.026, 49.5293 )
+[node name="Box1" parent="." instance=ExtResource( 3 )]
+position = Vector2( 308.556, 90.2668 )
 
 [node name="Box2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 515.533, 175.179 )
@@ -28,16 +28,16 @@ position = Vector2( 515.533, 175.179 )
 [node name="Box3" parent="." instance=ExtResource( 3 )]
 position = Vector2( 653.377, 28.8446 )
 
-[node name="LevelGeometry" parent="." instance=ExtResource( 4 )]
-
-[node name="Node" type="Node" parent="."]
-script = ExtResource( 6 )
-pb1_node_path = NodePath("../Box")
+[node name="Lashing" parent="." instance=ExtResource( 6 )]
+position = Vector2( 345.304, 32.3104 )
+pb1_node_path = NodePath("../Box1")
 pb2_node_path = NodePath("../Box2")
 
-[node name="Node2" type="Node" parent="."]
-script = ExtResource( 6 )
-pb1_node_path = NodePath("../Box")
+[node name="Lashing2" parent="." instance=ExtResource( 6 )]
+position = Vector2( 475.646, 41.3169 )
+pb1_node_path = NodePath("../Box1")
 pb2_node_path = NodePath("../Box3")
+
+[node name="LevelGeometry" parent="." instance=ExtResource( 4 )]
 
 [editable path="LevelGeometry"]
