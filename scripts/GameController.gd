@@ -30,7 +30,7 @@ func _draw():
 	if drag_mode > 0:
 		draw_line(drag_start, get_global_mouse_position(), lash_create_colour if drag_mode == 1 else lash_cut_colour)
 		
-func _process(delta):
+func _process(_delta):
 	if drag_mode > 0:
 		if drag_mode == 1 and lashed_from:
 			drag_start = lashed_from.position
@@ -40,8 +40,9 @@ func lash_cut(start: Vector2, end: Vector2):
 	var space_state = get_world_2d().direct_space_state
 	
 	var collision = space_state.intersect_ray(start, end, [], globals.collision_layers['lashings'],  true, true)
-	var lash_collider: Area2D = collision['collider']
-	get_tree().queue_delete(lash_collider.get_parent())
+	if collision.size() > 0:
+		var lash_collider: Area2D = collision['collider']
+		get_tree().queue_delete(lash_collider.get_parent())
 	
 	
 	
