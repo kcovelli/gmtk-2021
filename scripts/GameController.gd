@@ -8,14 +8,6 @@ var lash_cut_colour: Color = Color(255, 0, 0)
 const lashing_scene: PackedScene = preload("res://scenes/Lashing.tscn")
 var lashed_from: PhysicsBody2D = null # Keeps track of prev. lashed object
 
-func _ready():
-	$Box1.connect("lashed_from", self, "handle_lashed_from")
-	$Box1.connect("lashed_to", self, "handle_lashed_to")
-	$Box2.connect("lashed_from", self, "handle_lashed_from")
-	$Box2.connect("lashed_to", self, "handle_lashed_to")
-	$Box3.connect("lashed_from", self, "handle_lashed_from")
-	$Box3.connect("lashed_to", self, "handle_lashed_to")
-
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
 		
@@ -32,7 +24,6 @@ func _unhandled_input(event):
 			update() # calls _draw()
 			
 		print(event.position, drag_mode)
-	
 
 func _draw():
 	if drag_mode > 0:
@@ -60,4 +51,3 @@ func handle_lashed_to(path):
 		add_child(lashing)
 	
 	lashed_from = null
-	
