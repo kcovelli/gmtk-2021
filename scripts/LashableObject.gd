@@ -16,7 +16,7 @@ func _enter_tree():
 	connect("lashed_from", lash_handler, "handle_lashed_from")
 	connect("lashed_to", lash_handler, "handle_lashed_to")
 
-func _input_event(viewport, event, shape_idx):
+func _input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT:
 			if event.pressed:
