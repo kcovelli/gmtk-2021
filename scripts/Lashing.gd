@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 
 export(NodePath) var pb1_node_path;
 export(NodePath) var pb2_node_path;
@@ -17,5 +17,12 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	update()
 	pb1.apply_central_impulse(pb1.position.direction_to(pb2.position) * strength)
 	pb2.apply_central_impulse(pb2.position.direction_to(pb1.position) * strength)
+	
+
+
+func _draw():
+	if pb1 and pb2:
+		draw_line(pb1.position, pb2.position, Color(0, 100, 255))
