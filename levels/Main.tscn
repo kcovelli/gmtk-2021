@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/Ground.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Box.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/LevelTemplate.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scripts/GameController.gd" type="Script" id=5]
-[ext_resource path="res://scenes/Lashing.tscn" type="PackedScene" id=6]
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 5 )
@@ -24,16 +23,6 @@ position = Vector2( 515.533, 175.179 )
 
 [node name="Box3" parent="." instance=ExtResource( 3 )]
 position = Vector2( 653.377, 28.8446 )
-
-[node name="Lashing1->2" parent="." instance=ExtResource( 6 )]
-position = Vector2( 345.304, 32.3104 )
-pb1_node_path = NodePath("../Box1")
-pb2_node_path = NodePath("../Box2")
-
-[node name="Lashing1->3" parent="." instance=ExtResource( 6 )]
-position = Vector2( 475.646, 41.3169 )
-pb1_node_path = NodePath("../Box1")
-pb2_node_path = NodePath("../Box3")
 
 [node name="LevelGeometry" parent="." instance=ExtResource( 4 )]
 

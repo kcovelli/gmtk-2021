@@ -2,9 +2,17 @@ extends Node2D
 
 var dragging: bool = false
 var drag_start: Vector2
-# Called when the node enters the scene tree for the first time.
+
+const lashing_scene: PackedScene = preload("res://scenes/Lashing.tscn")
+var lashed_from: NodePath # Keeps track of prev. object that was lashed from
+
 func _ready():
-	pass # Replace with function body.
+	$Box1.connect("lashed_from", self, "handle_lashed_from")
+	$Box1.connect("lashed_to", self, "handle_lashed_to")
+	$Box2.connect("lashed_from", self, "handle_lashed_from")
+	$Box2.connect("lashed_to", self, "handle_lashed_to")
+	$Box3.connect("lashed_from", self, "handle_lashed_from")
+	$Box3.connect("lashed_to", self, "handle_lashed_to")
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
@@ -26,6 +34,17 @@ func _process(delta):
 	if dragging:
 		update()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func handle_lashed_from(path):
+	lashed_from = path
+
+func handle_lashed_to(path):
+	if lashed_from == "":
+		return
+	
+	if lashed_from != path:
+		var lashing = lashing_scene.instance()
+		lashing.pb1_node_path = lashed_from
+		lashing.pb2_node_path = path
+		add_child(lashing)
+	
+	lashed_from = ""
