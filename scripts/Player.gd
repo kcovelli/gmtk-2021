@@ -35,10 +35,8 @@ func apply_force(state: Physics2DDirectBodyState) -> void:
 
 
 func _on_GroundCheck_body_entered(body: Node) -> void:
-	print('grounded!')
 	grounded = true
 
 
 func _on_GroundCheck_body_exited(body: Node) -> void:
-	print('not grounded...')
 	grounded = false
