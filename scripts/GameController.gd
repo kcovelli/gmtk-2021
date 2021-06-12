@@ -5,6 +5,7 @@ var drag_start: Vector2
 var lash_create_colour: Color = Color(0, 255, 0)
 var lash_cut_colour: Color = Color(255, 0, 0)
 var lashed_from_pb: PhysicsBody2D = null
+var lash_started_successfully: bool = false
 
 const lashing_scene: PackedScene = preload("res://scenes/Lashing.tscn")
 var lashed_from: NodePath # Keeps track of prev. object that was lashed from
@@ -23,10 +24,13 @@ func _unhandled_input(event):
 		if event.pressed:
 			if event.button_index == BUTTON_RIGHT:
 				drag_mode = 2
+			elif event.button_index == BUTTON_LEFT:
+				lashed_from = ""
+				lashed_from_pb = null
 			drag_start = event.position
 		else:
 			drag_mode = 0
-			update()
+			update() # calls _draw()
 			
 		print(event.position, drag_mode)
 	
