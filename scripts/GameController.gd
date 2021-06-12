@@ -5,7 +5,6 @@ var drag_start: Vector2
 var lash_create_colour: Color = Color(0, 255, 0)
 var lash_cut_colour: Color = Color(255, 0, 0)
 var lashed_from_pb: PhysicsBody2D = null
-var lash_started_successfully: bool = false
 
 const lashing_scene: PackedScene = preload("res://scenes/Lashing.tscn")
 var lashed_from: NodePath # Keeps track of prev. object that was lashed from
