@@ -15,6 +15,11 @@ func _ready():
 	var max_jump_speed = 400
 	
 func apply_force(state: Physics2DDirectBodyState) -> void:
+	if(grounded):
+		# Reset jumping.
+		can_jump = true
+		jump_time = 0
+		
 	if(Input.is_action_pressed("ui_left")):
 		directional_force += Vector2.LEFT
 		
@@ -27,16 +32,13 @@ func apply_force(state: Physics2DDirectBodyState) -> void:
 		
 	elif(Input.is_action_just_released("ui_up")):
 		can_jump = false
-		pass
-	if(grounded):
-		# Reset jumping.
-		can_jump = true
-		jump_time = 0
 
 
 func _on_GroundCheck_body_entered(body: Node) -> void:
-	pass # Replace with function body.
+	print('grounded!')
+	grounded = true
 
 
 func _on_GroundCheck_body_exited(body: Node) -> void:
-	pass # Replace with function body.
+	print('not grounded...')
+	grounded = false
