@@ -25,11 +25,19 @@ position = Vector2( 310.026, 49.5293 )
 [node name="Box2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 515.533, 175.179 )
 
+[node name="Box3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 653.377, 28.8446 )
+
 [node name="LevelGeometry" parent="." instance=ExtResource( 4 )]
 
 [node name="Node" type="Node" parent="."]
 script = ExtResource( 6 )
 pb1_node_path = NodePath("../Box")
 pb2_node_path = NodePath("../Box2")
+
+[node name="Node2" type="Node" parent="."]
+script = ExtResource( 6 )
+pb1_node_path = NodePath("../Box")
+pb2_node_path = NodePath("../Box3")
 
 [editable path="LevelGeometry"]
