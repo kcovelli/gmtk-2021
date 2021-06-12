@@ -21,6 +21,7 @@ func apply_force(state: Physics2DDirectBodyState) -> void:
 		jump_time = 0
 		
 	if(Input.is_action_pressed("ui_left")):
+		print('left')
 		directional_force += Vector2.LEFT
 		
 	if(Input.is_action_pressed("ui_right")):
