@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/LevelTemplate.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Ground.tscn" type="PackedScene" id=2]
@@ -6,11 +6,12 @@
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/LashableTerrain.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/Button.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/Door.tscn" type="PackedScene" id=7]
 
 [node name="Level_0" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 116.876, 71.6111 )
+position = Vector2( 145.487, 69.3151 )
 
 [node name="Platform" parent="." instance=ExtResource( 2 )]
 position = Vector2( 116.391, 84.5533 )
@@ -18,7 +19,7 @@ collision_layer = 4
 collision_mask = 3
 
 [node name="Box1" parent="." instance=ExtResource( 3 )]
-position = Vector2( 528, 56 )
+position = Vector2( 40.4326, 40.0807 )
 
 [node name="Box2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 515.533, 175.179 )
@@ -26,22 +27,22 @@ position = Vector2( 515.533, 175.179 )
 [node name="Box3" parent="." instance=ExtResource( 3 )]
 position = Vector2( 653.377, 28.8446 )
 
-[node name="Node2D" parent="." instance=ExtResource( 5 )]
+[node name="Static1" parent="." instance=ExtResource( 5 )]
 position = Vector2( 304, 184 )
 
-[node name="Node2D2" parent="." instance=ExtResource( 5 )]
+[node name="Static2" parent="." instance=ExtResource( 5 )]
 position = Vector2( 320, 184 )
 
-[node name="Node2D3" parent="." instance=ExtResource( 5 )]
+[node name="Static3" parent="." instance=ExtResource( 5 )]
 position = Vector2( 336, 184 )
 
-[node name="Node2D4" parent="." instance=ExtResource( 5 )]
+[node name="Static4" parent="." instance=ExtResource( 5 )]
 position = Vector2( 320, 120 )
 
-[node name="Node2D5" parent="." instance=ExtResource( 5 )]
+[node name="Static5" parent="." instance=ExtResource( 5 )]
 position = Vector2( 496, 248 )
 
-[node name="Node2D6" parent="." instance=ExtResource( 5 )]
+[node name="Static6" parent="." instance=ExtResource( 5 )]
 position = Vector2( 392, 56 )
 
 [node name="LevelGeometry" parent="." instance=ExtResource( 1 )]
@@ -49,7 +50,12 @@ position = Vector2( 392, 56 )
 [node name="TileMap" parent="LevelGeometry" index="0"]
 position = Vector2( 41.551, 19.8446 )
 
-[node name="Node2D7" parent="." instance=ExtResource( 6 )]
-position = Vector2( 39.9573, 77.3365 )
+[node name="Button" parent="." instance=ExtResource( 6 )]
+position = Vector2( 97.9791, 76.916 )
+connected_doors = [ NodePath("../Door") ]
+
+[node name="Door" parent="." instance=ExtResource( 7 )]
+position = Vector2( 182.251, 57.7844 )
+scale = Vector2( 1.92233, 3.08145 )
 
 [editable path="LevelGeometry"]
