@@ -44,7 +44,7 @@ func start_glow():
 	if shape is RectangleShape2D:
 		glow.shape = ParticlesMaterial.EMISSION_SHAPE_BOX
 		glow.extents = shape.extents
-	elif shape is CircleShape2D:
+	elif shape is CircleShape2D or shape is CapsuleShape2D :
 		glow.shape = ParticlesMaterial.EMISSION_SHAPE_SPHERE
 		glow.radius = shape.radius
 	else:

@@ -4,7 +4,7 @@
 [ext_resource path="res://scripts/Player.gd" type="Script" id=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
-height = 3.58359
+height = 2.13648
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 5, 0.5 )
@@ -12,16 +12,15 @@ extents = Vector2( 5, 0.5 )
 [node name="Player" type="RigidBody2D"]
 collision_mask = 14
 mode = 2
+mass = 1.02041
 gravity_scale = 10.0
 can_sleep = false
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -11.7324 )
 shape = SubResource( 1 )
 
-[node name="Sprite2" type="Sprite" parent="."]
-position = Vector2( 0, -12 )
+[node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 region_rect = Rect2( 0, 0, 10, 10 )
 
@@ -32,7 +31,7 @@ current = true
 collision_mask = 14
 
 [node name="GroundCollision" type="CollisionShape2D" parent="GroundCheck"]
-position = Vector2( 0, -0.5 )
+position = Vector2( 0, 11.5039 )
 shape = SubResource( 2 )
 
 [connection signal="body_entered" from="GroundCheck" to="." method="_on_GroundCheck_body_entered"]
