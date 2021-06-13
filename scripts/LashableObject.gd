@@ -8,6 +8,7 @@ const GLOW_SCENE: PackedScene = preload("res://scenes/Glow.tscn")
 signal lashed_from
 signal lashed_to
 
+var is_lashing: bool = false
 var is_hovered: bool = false
 var glow: Node = null
 
@@ -29,15 +30,30 @@ func _input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT:
 			if event.pressed:
+				start_lashing()
 				emit_signal("lashed_from", get_path())
 				# Swallow the mouse press
 				get_tree().set_input_as_handled()
 			else:
 				emit_signal("lashed_to", get_path())
-				# Don't swallow the mouse press, since GameController needs
-				# to end the drag.
+				# Don't swallow the mouse press, since we rely on
+				# GameController to end the mouse drag.
+
+# API
+
+func start_lashing():
+	is_lashing = true
+	start_glow()
+
+func cancel_lashing():
+	is_lashing = false
+	stop_glow()
+
+# Helpers
 
 func start_glow():
+	if glow != null:
+		return
 	glow = GLOW_SCENE.instance()
 	
 	var shape = $CollisionShape2D.shape
@@ -53,12 +69,18 @@ func start_glow():
 	add_child(glow)
 
 func stop_glow():
+	if glow == null:
+		return
 	remove_child(glow)
+	get_tree().queue_delete(glow)
+	glow = null
 
 func handle_mouse_entered():
 	is_hovered = true
-	start_glow()
+	if not is_lashing:
+		start_glow()
 
 func handle_mouse_exited():
 	is_hovered = false
-	stop_glow()
+	if not is_lashing:
+		stop_glow()
