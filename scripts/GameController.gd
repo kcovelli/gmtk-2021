@@ -21,7 +21,7 @@ func _unhandled_input(event):
 	if event is InputEventMouseButton:
 		handle_mouse_button_event(event)
 	elif event.is_action_pressed("slow_time"):
-		Engine.time_scale = 0.2
+		Engine.time_scale = 0.02
 	elif event.is_action_released("slow_time"):
 		Engine.time_scale = 1
 	elif event.is_action_pressed("next_level"):
