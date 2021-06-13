@@ -8,7 +8,7 @@
 [node name="Level_0" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 194.823, 58.6879 )
+position = Vector2( 557.574, 204.652 )
 
 [node name="Platform" parent="." instance=ExtResource( 2 )]
 position = Vector2( 557.683, 263.327 )
@@ -24,4 +24,5 @@ position = Vector2( 653.377, 28.8446 )
 
 [node name="LevelGeometry" parent="." instance=ExtResource( 1 )]
 
+[editable path="Player"]
 [editable path="LevelGeometry"]
