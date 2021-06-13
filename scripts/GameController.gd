@@ -61,7 +61,7 @@ func handle_lashed_to(path):
 		var lashing = lashing_scene.instance()
 		lashing.set_pb1_path(from_path)
 		lashing.set_pb2_path(path)
-		get_child(0).add_child(lashing) # level scene should always be the only child of Main
+		get_child(1).add_child(lashing) # level scene should always be the only child of Main
 	
 	lashed_from = null
 
