@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Box.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/LevelTemplate.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/LashableTerrain.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/Goal.tscn" type="PackedScene" id=8]
 
 [node name="Level_0" type="Node2D"]
@@ -26,5 +27,8 @@ position = Vector2( -367.422, 330.647 )
 
 [node name="RigidBody2D3" parent="." instance=ExtResource( 3 )]
 position = Vector2( -355.663, 276.05 )
+
+[node name="LashableBlock" parent="." instance=ExtResource( 5 )]
+position = Vector2( 283.714, 372.532 )
 
 [editable path="LevelGeometry"]
