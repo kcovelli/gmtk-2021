@@ -32,6 +32,8 @@ func _unhandled_input(event):
 	elif event.is_action_pressed("prev_level"):
 		print('going to prev level')
 		set_curr_level_num(curr_level_num - 1)
+	elif event.is_action_pressed('reset_level'):
+		reset_level()
 
 # draw lashing cut/create line
 func _draw():
@@ -68,6 +70,10 @@ func handle_lashed_to(path):
 func next_level():
 	set_curr_level_num(curr_level_num + 1)
 
+func reset_level():
+	set_curr_level_num(curr_level_num)
+	
+
 func handle_mouse_button_event(event):
 	if event.pressed:
 			if event.button_index == BUTTON_RIGHT:
@@ -90,14 +96,10 @@ func set_curr_level_num(lvl: int):
 		print('invalid level number')
 		return
 	
-	# TODO: fade to black before switching
-	if lvl != curr_level_num:		
-		curr_level_num = lvl
-		get_tree().queue_delete(curr_level)
-		curr_level = globals.LEVEL_LIST[curr_level_num].instance()
-		call_deferred('add_child', curr_level)
-	else:
-		print('tried to set level to the current level. TODO: add a retry level function')
+	curr_level_num = lvl
+	get_tree().queue_delete(curr_level)
+	curr_level = globals.LEVEL_LIST[curr_level_num].instance()
+	call_deferred('add_child', curr_level) # i got literally 500 errors that told me to do this, no clue why
 		
 func lash_cut(start: Vector2, end: Vector2):
 	# do raycast to see if cutting line intersects a lash
