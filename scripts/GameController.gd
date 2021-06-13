@@ -28,7 +28,7 @@ func _unhandled_input(event):
 		get_node("Overlay/Sprite").visible = false
 	elif event.is_action_pressed("next_level"):
 		print('going to next level')
-		set_curr_level_num(curr_level_num + 1)
+		next_level()
 	elif event.is_action_pressed("prev_level"):
 		print('going to prev level')
 		set_curr_level_num(curr_level_num - 1)
@@ -65,6 +65,9 @@ func handle_lashed_to(path):
 	
 	lashed_from = null
 
+func next_level():
+	set_curr_level_num(curr_level_num + 1)
+
 func handle_mouse_button_event(event):
 	if event.pressed:
 			if event.button_index == BUTTON_RIGHT:
@@ -92,7 +95,7 @@ func set_curr_level_num(lvl: int):
 		curr_level_num = lvl
 		get_tree().queue_delete(curr_level)
 		curr_level = globals.LEVEL_LIST[curr_level_num].instance()
-		add_child(curr_level)
+		call_deferred('add_child', curr_level)
 	else:
 		print('tried to set level to the current level. TODO: add a retry level function')
 		
