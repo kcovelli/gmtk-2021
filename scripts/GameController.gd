@@ -22,8 +22,10 @@ func _unhandled_input(event):
 		handle_mouse_button_event(event)
 	elif event.is_action_pressed("slow_time"):
 		Engine.time_scale = 0.2
+		get_node("Overlay/Sprite").visible = true
 	elif event.is_action_released("slow_time"):
 		Engine.time_scale = 1
+		get_node("Overlay/Sprite").visible = false
 	elif event.is_action_pressed("next_level"):
 		print('going to next level')
 		set_curr_level_num(curr_level_num + 1)
