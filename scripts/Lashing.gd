@@ -5,8 +5,8 @@ onready var globals = get_node("/root/Globals")
 export(NodePath) var pb1_node_path = null setget set_pb1_path;
 export(NodePath) var pb2_node_path = null setget set_pb2_path;
 
-var pb1: RigidBody2D;
-var pb2: RigidBody2D;
+var pb1: PhysicsBody2D;
+var pb2: PhysicsBody2D;
 
 var strength: float = 10
 
@@ -41,8 +41,10 @@ func _ready():
 func _process(_delta):
 	if pb1 and pb2:
 		update()
-		pb1.apply_central_impulse(pb1.position.direction_to(pb2.position) * strength)
-		pb2.apply_central_impulse(pb2.position.direction_to(pb1.position) * strength)
+		if pb1 is RigidBody2D:
+			pb1.apply_central_impulse(pb1.position.direction_to(pb2.position) * strength)
+		if pb2 is RigidBody2D:
+			pb2.apply_central_impulse(pb2.position.direction_to(pb1.position) * strength)
 		shape.a = pb1.position
 		shape.b = pb2.position
 	
