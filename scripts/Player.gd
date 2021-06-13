@@ -4,7 +4,6 @@ extends "res://scripts/Character.gd"
 const MAX_JUMP_TIME =  0.1
 
 # Check whether or not a character is on the ground.
-var grounded = false 
 var can_jump = false
 var jump_time = 0
 
@@ -39,4 +38,5 @@ func _on_GroundCheck_body_entered(body: Node) -> void:
 
 
 func _on_GroundCheck_body_exited(body: Node) -> void:
+	print('left')
 	grounded = false

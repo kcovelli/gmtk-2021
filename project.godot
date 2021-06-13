@@ -103,6 +103,10 @@ prev_level={
 
 [layer_names]
 
+2d_physics/layer_1="Player"
+2d_physics/layer_2="Objects"
+2d_physics/layer_3="Terrain"
+2d_physics/layer_4="Background"
 2d_physics/layer_20="lashings"
 
 [physics]
