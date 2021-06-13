@@ -8,10 +8,10 @@
 [node name="Level_0" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( 194.823, 58.6879 )
+position = Vector2( 116.876, 71.6111 )
 
 [node name="Platform" parent="." instance=ExtResource( 2 )]
-position = Vector2( 557.683, 263.327 )
+position = Vector2( 116.391, 84.5533 )
 
 [node name="Box1" parent="." instance=ExtResource( 3 )]
 position = Vector2( 308.556, 90.2668 )
