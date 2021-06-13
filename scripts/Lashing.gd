@@ -36,6 +36,12 @@ func _ready():
 	
 	add_child(area)
 	
+	pb1.start_lashing()
+	pb2.start_lashing()
+
+func _exit_tree():
+	pb1.cancel_lashing()
+	pb2.cancel_lashing()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

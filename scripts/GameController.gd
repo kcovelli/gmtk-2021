@@ -67,12 +67,13 @@ func handle_mouse_button_event(event):
 	if event.pressed:
 			if event.button_index == BUTTON_RIGHT:
 				drag_mode = 2
-			elif event.button_index == BUTTON_LEFT:
-				# Reset lashed_from since mouse was released on a non-lashable
-				# object (otherwise this mouse event would have been handled)
-				lashed_from = null
 			drag_start = screen_coords_to_world(event.position)
 	else:
+		if event.button_index == BUTTON_LEFT and lashed_from != null:
+			# Reset lashed_from since mouse was released on a non-lashable
+			# object (otherwise this mouse event would have been handled)
+			lashed_from.cancel_lashing()
+			lashed_from = null
 		if drag_mode == 2:
 			lash_cut(drag_start, screen_coords_to_world(event.position))
 		drag_mode = 0
