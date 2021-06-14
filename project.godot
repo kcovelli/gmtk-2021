@@ -11,12 +11,12 @@ config_version=4
 [application]
 
 config/name="GMTK 2021"
-run/main_scene="res://scenes/Main.tscn"
+run/main_scene="res://entities/GameController/Main.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-Globals="*res://scripts/Globals.gd"
+Globals="*res://globals/Globals.gd"
 
 [importer_defaults]
 

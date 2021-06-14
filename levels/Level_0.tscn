@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/Box.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/LevelTemplate.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/LashableTerrain.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/Goal.tscn" type="PackedScene" id=8]
+[ext_resource path="res://entities/Player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://entities/LashableObjects/Box.tscn" type="PackedScene" id=3]
+[ext_resource path="res://entities/LevelComponents/LevelTemplate.tscn" type="PackedScene" id=4]
+[ext_resource path="res://entities/LashableObjects/LashableTerrain.tscn" type="PackedScene" id=5]
+[ext_resource path="res://entities/LevelComponents/Goal/Goal.tscn" type="PackedScene" id=8]
 
 [node name="Level_0" type="Node2D"]
 

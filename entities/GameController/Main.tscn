@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://entities/GameController/slow_time.png" type="Texture" id=1]
+[ext_resource path="res://entities/GameController/GameController.gd" type="Script" id=2]
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Overlay" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="Sprite" type="Sprite" parent="Overlay"]
+visible = false
+modulate = Color( 1, 1, 1, 0.196078 )
+position = Vector2( 320.018, -256.021 )
+scale = Vector2( 21881.4, 11835.5 )
+texture = ExtResource( 1 )
