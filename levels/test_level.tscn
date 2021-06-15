@@ -19,6 +19,12 @@ position = Vector2( 116.391, 84.5533 )
 collision_layer = 4
 collision_mask = 3
 
+[node name="Platform3" parent="." instance=ExtResource( 5 )]
+position = Vector2( -172.19, 172.158 )
+rotation = 0.205239
+collision_layer = 4
+collision_mask = 3
+
 [node name="Platform2" parent="." instance=ExtResource( 5 )]
 position = Vector2( 267.333, 360.393 )
 scale = Vector2( 10, 1 )

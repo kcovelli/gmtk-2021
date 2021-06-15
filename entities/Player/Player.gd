@@ -5,81 +5,84 @@ extends "res://entities/LashableObjects/LashableObject.gd"
 # Default movement values.
 #var acceleration = Vector2(100, 1000)
 #var velocity = Vector2.ZERO
-const GROUND_UNITS_PER_FRAME = 100
-const AIR_UNITS_PER_FRAME = 75
-const JUMP_FORCE = 100
+const GROUND_UNITS_PER_FRAME = 50
+const AIR_UNITS_PER_FRAME = 10
+const JUMP_FORCE = 300
 
-const MAX_USER_SPEED = 500
+const AIRIAL_LINEAR_DAMP = 0.1
+const GROUND_LINEAR_DAMP = 0.1
+const AIRIAL_ANGULAR_DAMP = 5
+const GROUND_ANGULAR_DAMP = 5
+
+
+const MAX_USER_SPEED = 200
 const MAX_USER_SPEED_SQ = MAX_USER_SPEED * MAX_USER_SPEED
+const MAX_GROUNDED_NORM_ANGLE = PI/4
+
+onready var RB := $'.'
+
 var curr_user_speed := 0
 var last_total_velocity := Vector2()
-
+var contact_norm := Vector2()
 var grounded = false
+var calls_since_jump = 0
 
 func _integrate_forces(state: Physics2DDirectBodyState) -> void:
-#	var final_force := Vector2()
 	
-	# Don't move if you're not changing direction.
-#	directional_force = Vector2.ZERO
+	contact_norm = get_most_vertical_norm(state)
+	grounded = abs(contact_norm.angle() + PI/2) < PI/4
 	
-	# user input
+	if grounded:
+		RB.angular_damp = GROUND_ANGULAR_DAMP
+		RB.linear_damp = GROUND_LINEAR_DAMP
+		print(contact_norm, ' ', rad2deg(contact_norm.angle()))
+	else:
+		RB.angular_damp = AIRIAL_ANGULAR_DAMP
+		RB.linear_damp = AIRIAL_LINEAR_DAMP
+		
+	
 	var input := get_user_input()
 	var user_influence := Vector2(input[0], 0) * (GROUND_UNITS_PER_FRAME if grounded else AIR_UNITS_PER_FRAME)
 	var jump: bool = input[2]
-	
-	if abs(curr_user_speed + user_influence[0]) <= MAX_USER_SPEED:
-		curr_user_speed += user_influence[0]
-	else:
-		curr_user_speed = sign(curr_user_speed + user_influence[0]) * MAX_USER_SPEED
 
-	
 	var velocity = state.get_linear_velocity()
 	
 	if velocity.length_squared() < MAX_USER_SPEED_SQ or (velocity + user_influence).length_squared() < last_total_velocity.length_squared():
 		velocity += user_influence
-	
-#	velocity += user_influence
+
 	state.set_linear_velocity(velocity)
 	last_total_velocity = velocity
-#	last_velocity = velocity
-#	state.transform.origin += user_influence
-	if jump and state.get_contact_count() > 0:
-		state.apply_central_impulse(state.get_contact_local_normal(0) * JUMP_FORCE)
-		
-#	var max_move_speed = 300 + (3700 * int(is_lashing)) -  (175 * int(!grounded))
-#	var max_jump_speed = 300 + (600 * int(velocity.y > 0))
-#
-#	velocity.x += directional_force.x * acceleration.x
-#	velocity.y += directional_force.y * acceleration.y
-#
-#	# Get movement velocity
-#	final_force.x = sign(velocity.x) * min(max_move_speed, abs(velocity.x))	
-#	final_force.y = sign(velocity.y) * min(max_jump_speed, abs(velocity.y))
-#
-#	if not grounded and (Input.is_action_just_released("ui_right") or Input.is_action_just_released("ui_left")):
-#		final_force.x = 0
-#	state.set_linear_velocity(final_force)
+	
+	if jump and grounded and calls_since_jump > 5:
+		state.apply_central_impulse(contact_norm * JUMP_FORCE)
+		calls_since_jump = 0
+	else:
+		calls_since_jump += 1
+	
 
 func get_user_input() -> Vector3:
 	var h = -1 if Input.is_action_pressed("ui_left") else 1 if Input.is_action_pressed("ui_right") else 0
 	var v = -1 if Input.is_action_pressed("ui_up") else 1 if Input.is_action_pressed("ui_down") else 0
 	return Vector3(h, v, Input.is_action_pressed("jump"))
-	
-#func apply_force(state: Physics2DDirectBodyState) -> void:
-#	if not is_lashing:		
-#		if(Input.is_action_pressed("ui_left")):
-#			directional_force += Vector2.LEFT
-#		if(Input.is_action_pressed("ui_right")):
-#			directional_force += Vector2.RIGHT
-#		if(Input.is_action_pressed("ui_up") && grounded):
-#			directional_force += Vector2.UP
-#			grounded = false
-#
-#		$Sprite.flip_h =  directional_force.x >= 0
 
 
-func _on_GroundCheck_body_entered(body: Node) -> void:
-	grounded = true
-	
-func _on_GroundCheck_body_exited(body):
-	grounded = false
+
+func get_most_vertical_norm(state: Physics2DDirectBodyState) -> Vector2:
+	var n_norms = state.get_contact_count()
+	if n_norms == 0:
+		return Vector2()
+	if n_norms == 1:
+		return state.get_contact_local_normal(0)
+		
+	var min_norm = null
+	var min_angle = 50000 # any angle will be less than 2PI so whatever
+	var a = 0
+	var n: Vector2
+	for i in range(n_norms):
+		n = state.get_contact_local_normal(i)
+		a = abs(n.angle() + PI/2)
+		if a < min_angle:
+			min_norm = n
+			min_angle = a
+	return min_norm
+			
