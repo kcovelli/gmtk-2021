@@ -8,7 +8,7 @@ export(NodePath) var pb2_node_path = null setget set_pb2_path;
 var pb1: PhysicsBody2D;
 var pb2: PhysicsBody2D;
 
-var strength: float = 10
+var strength: float = 0.5
 
 var shape: SegmentShape2D = null
 
@@ -48,9 +48,9 @@ func _process(_delta):
 	if pb1 and pb2:
 		update()
 		if pb1 is RigidBody2D:
-			pb1.apply_central_impulse(pb1.position.direction_to(pb2.position) * strength)
+			pb1.apply_central_impulse((pb2.position - pb1.position) * strength)
 		if pb2 is RigidBody2D:
-			pb2.apply_central_impulse(pb2.position.direction_to(pb1.position) * strength)
+			pb2.apply_central_impulse((pb1.position - pb2.position)* strength)
 		shape.a = pb1.position
 		shape.b = pb2.position
 	
