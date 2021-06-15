@@ -9,7 +9,6 @@
 [ext_resource path="res://entities/LashableObjects/Box.tscn" type="PackedScene" id=7]
 [ext_resource path="res://entities/Player/Player.tscn" type="PackedScene" id=8]
 
-
 [node name="Level_0" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource( 8 )]
@@ -20,14 +19,20 @@ position = Vector2( 116.391, 84.5533 )
 collision_layer = 4
 collision_mask = 3
 
+[node name="Platform2" parent="." instance=ExtResource( 5 )]
+position = Vector2( 267.333, 360.393 )
+scale = Vector2( 10, 1 )
+collision_layer = 4
+collision_mask = 3
+
 [node name="Box1" parent="." instance=ExtResource( 7 )]
-position = Vector2( 40.4326, 40.0807 )
+position = Vector2( 99.5939, 43.1448 )
 
 [node name="Box2" parent="." instance=ExtResource( 7 )]
-position = Vector2( 515.533, 175.179 )
+position = Vector2( 495.352, 223.951 )
 
 [node name="Box3" parent="." instance=ExtResource( 7 )]
-position = Vector2( 653.377, 28.8446 )
+position = Vector2( 496.41, 198.706 )
 
 [node name="Static1" parent="." instance=ExtResource( 4 )]
 position = Vector2( 304, 184 )
@@ -61,6 +66,6 @@ position = Vector2( 182.251, 57.7844 )
 scale = Vector2( 1.92233, 3.08145 )
 
 [node name="Goal" parent="." instance=ExtResource( 1 )]
-position = Vector2( 63.6587, 72.1405 )
+position = Vector2( 73.3225, 28.2999 )
 
 [editable path="LevelGeometry"]
