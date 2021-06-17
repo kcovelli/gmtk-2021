@@ -13,7 +13,6 @@ var min_strength: float = 3000
 
 var shape: SegmentShape2D = null
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pb1 = get_node(pb1_node_path)
@@ -49,7 +48,6 @@ var curr_force := Vector2()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-#	print(curr_force.length())
 	if pb1 and pb2:
 		update()
 		if Globals.LASHINGS_CONSTANT_FORCE:

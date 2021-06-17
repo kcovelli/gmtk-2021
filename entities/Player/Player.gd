@@ -1,45 +1,51 @@
 extends "res://entities/LashableObjects/LashableObject.gd"
 
-#var directional_force = Vector2()
 
 # Default movement values.
-#var acceleration = Vector2(100, 1000)
-#var velocity = Vector2.ZERO
 const GROUND_UNITS_PER_FRAME = 50
-const AIR_UNITS_PER_FRAME = 10
+const AIR_UNITS_PER_FRAME = 5
+const LASHED_UNITS_PER_FRAME = 25 # TODO: implement and test value
 const JUMP_FORCE = 300
 
+# Dampening values
 const AIRIAL_LINEAR_DAMP = 0.1
 const GROUND_LINEAR_DAMP = 0.1
 const AIRIAL_ANGULAR_DAMP = 5
 const GROUND_ANGULAR_DAMP = 5
 
-
+# Maximum speed that can be contributed by user input
 const MAX_USER_SPEED = 200
 const MAX_USER_SPEED_SQ = MAX_USER_SPEED * MAX_USER_SPEED
-const MAX_GROUNDED_NORM_ANGLE = PI/4
 
+# Max angle (rads) the most vertical contact normal can be for the player to be considered "grounded"
+const MAX_GROUNDED_NORM_ANGLE = PI/8
+
+# reference to the player's rigidbody. no idea why we can't just access the fields directly but whatever
 onready var RB := $'.'
 
+# current 
 var curr_user_speed := 0
 var last_total_velocity := Vector2()
 var contact_norm := Vector2()
 var grounded = false
+
+# after jumping we are sometimes still on the ground for a couple frames, 
+# so we don't want to apply the jump impulse multiple times
 var calls_since_jump = 0
 
-var last_norm := Vector2()
+# list of current contact norms. 0th index is the "most vertical". just used for debug for now
 var all_norms = []
 
 func _integrate_forces(state: Physics2DDirectBodyState) -> void:
 	
+	# get most vertical norm and check if it is within the range to be considered grounded
 	contact_norm = get_most_vertical_norm(state)
-	grounded = abs(contact_norm.angle() + PI/2) < PI/4
+	grounded = abs(contact_norm.angle() + PI/2) < MAX_GROUNDED_NORM_ANGLE
 	
+	# apply dampening
 	if grounded:
 		RB.angular_damp = GROUND_ANGULAR_DAMP
 		RB.linear_damp = GROUND_LINEAR_DAMP
-#		if not Globals.vec_equal_approx(contact_norm, last_norm):
-#			print(contact_norm, ' ', rad2deg(contact_norm.angle()))
 	else:
 		RB.angular_damp = AIRIAL_ANGULAR_DAMP
 		RB.linear_damp = AIRIAL_LINEAR_DAMP
@@ -51,20 +57,21 @@ func _integrate_forces(state: Physics2DDirectBodyState) -> void:
 
 	var velocity = state.get_linear_velocity()
 	
+	# only apply the velocity from user input if total velocity is less than the max, or applying it would slow us down
+	# TODO: technically we should keep track of how much speed has been added by user and check against that separately 
 	if velocity.length_squared() < MAX_USER_SPEED_SQ or (velocity + user_influence).length_squared() < last_total_velocity.length_squared():
 		velocity += user_influence
 
 	state.set_linear_velocity(velocity)
 	last_total_velocity = velocity
 	
+	# apply jump impulse
 	if jump and grounded and calls_since_jump > 5:
 		state.apply_central_impulse(contact_norm * JUMP_FORCE)
 		calls_since_jump = 0
 	else:
 		calls_since_jump += 1
 	
-	if contact_norm != Vector2():
-		last_norm = contact_norm
 	$'/root/Main'.update()
 
 func get_user_input() -> Vector3:
@@ -72,9 +79,8 @@ func get_user_input() -> Vector3:
 	var v = -1 if Input.is_action_pressed("ui_up") else 1 if Input.is_action_pressed("ui_down") else 0
 	return Vector3(h, v, Input.is_action_pressed("jump"))
 
-	
 
-
+# TODO: this code looks gross, refactor
 func get_most_vertical_norm(state: Physics2DDirectBodyState) -> Vector2:
 	var n_norms = state.get_contact_count()
 	if n_norms == 0:

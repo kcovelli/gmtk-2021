@@ -14,6 +14,7 @@ var lashed_from: PhysicsBody2D = null # Keeps track of prev. lashed object
 ##### GODOT FUNCTIONS #####
 
 func _ready():
+	curr_level.set_name("Level")
 	add_child(curr_level)
 
 func _unhandled_input(event):
@@ -39,7 +40,7 @@ func _draw():
 	if drag_mode > 0:
 		draw_line(drag_start, get_global_mouse_position(), lash_create_colour if drag_mode == 1 else lash_cut_colour)
 	
-	if $'Level/Player':
+	if $'Level/Player' and Globals.DRAW_DEBUG_NORMS:
 		var p = $'Level/Player'
 		for i in range(p.all_norms.size()):
 			draw_line(p.position, p.position + p.all_norms[i] * p.JUMP_FORCE * 0.25, Color(255, i * 50, 0))
@@ -101,6 +102,7 @@ func set_curr_level_num(lvl: int):
 		return
 	
 	curr_level_num = lvl
+	curr_level.set_name('To_Be_Deleted')
 	get_tree().queue_delete(curr_level)
 	curr_level = Globals.LEVEL_LIST[curr_level_num].instance()
 	curr_level.set_name('Level')

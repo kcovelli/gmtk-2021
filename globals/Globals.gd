@@ -6,6 +6,9 @@ const COLLISION_LAYERS: Dictionary = {'lashings': 0x80000}
 # whether you can cut multiple lashings at once
 const CUT_MULTIPLE_LASHINGS := true 
 
+# whether to draw normals of current collisions w/ player
+const DRAW_DEBUG_NORMS := false
+
 # whether lashing apply a constant force, or are stronger the further apart the objects are
 const LASHINGS_CONSTANT_FORCE := true
 
