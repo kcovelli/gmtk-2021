@@ -8,8 +8,8 @@ export(NodePath) var pb2_node_path = null setget set_pb2_path;
 var pb1: PhysicsBody2D;
 var pb2: PhysicsBody2D;
 
-var strength: float = 1
-var min_strength: float = 3
+var strength: float = 15
+var min_strength: float = 3000
 
 var shape: SegmentShape2D = null
 
@@ -44,17 +44,28 @@ func _exit_tree():
 	pb1.cancel_lashing()
 	pb2.cancel_lashing()
 
+var last_force := Vector2()
+var curr_force := Vector2()
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
+func _process(delta):
+#	print(curr_force.length())
 	if pb1 and pb2:
 		update()
-		var final_strength = max(min_strength, -pb1.position.distance_to(pb2.position) * strength)
+		if Globals.LASHINGS_CONSTANT_FORCE:
+			curr_force = (pb2.position - pb1.position).normalized() * min_strength * delta
+		else:
+			var final_strength = max(min_strength* delta, pb1.position.distance_to(pb2.position) * strength * delta) 
+			print(final_strength)
+			curr_force = (pb2.position - pb1.position).normalized() * final_strength
+		
 		if pb1 is RigidBody2D:
-			pb1.apply_central_impulse((pb2.position - pb1.position).normalized() * final_strength)
+			pb1.apply_central_impulse(curr_force)
 		if pb2 is RigidBody2D:
-			pb2.apply_central_impulse((pb1.position - pb2.position).normalized() * final_strength)
+			pb2.apply_central_impulse(-curr_force)
 		shape.a = pb1.position
 		shape.b = pb2.position
+		
 	
 func _draw():
 	if pb1 and pb2:

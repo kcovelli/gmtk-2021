@@ -27,6 +27,8 @@ var contact_norm := Vector2()
 var grounded = false
 var calls_since_jump = 0
 
+var last_norm := Vector2()
+
 func _integrate_forces(state: Physics2DDirectBodyState) -> void:
 	
 	contact_norm = get_most_vertical_norm(state)
@@ -35,7 +37,8 @@ func _integrate_forces(state: Physics2DDirectBodyState) -> void:
 	if grounded:
 		RB.angular_damp = GROUND_ANGULAR_DAMP
 		RB.linear_damp = GROUND_LINEAR_DAMP
-		print(contact_norm, ' ', rad2deg(contact_norm.angle()))
+#		if not Globals.vec_equal_approx(contact_norm, last_norm):
+#			print(contact_norm, ' ', rad2deg(contact_norm.angle()))
 	else:
 		RB.angular_damp = AIRIAL_ANGULAR_DAMP
 		RB.linear_damp = AIRIAL_LINEAR_DAMP
@@ -59,6 +62,7 @@ func _integrate_forces(state: Physics2DDirectBodyState) -> void:
 	else:
 		calls_since_jump += 1
 	
+	last_norm = contact_norm
 
 func get_user_input() -> Vector3:
 	var h = -1 if Input.is_action_pressed("ui_left") else 1 if Input.is_action_pressed("ui_right") else 0

@@ -45,6 +45,7 @@ func start_lashing():
 	is_lashing = true
 	start_glow()
 
+# TODO: check if there are any active lashes (eg if there were multiple and only one got canceled)
 func cancel_lashing():
 	is_lashing = false
 	stop_glow()
