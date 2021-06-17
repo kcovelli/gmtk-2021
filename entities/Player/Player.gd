@@ -28,6 +28,7 @@ var grounded = false
 var calls_since_jump = 0
 
 var last_norm := Vector2()
+var all_norms = []
 
 func _integrate_forces(state: Physics2DDirectBodyState) -> void:
 	
@@ -62,13 +63,16 @@ func _integrate_forces(state: Physics2DDirectBodyState) -> void:
 	else:
 		calls_since_jump += 1
 	
-	last_norm = contact_norm
+	if contact_norm != Vector2():
+		last_norm = contact_norm
+	$'/root/Main'.update()
 
 func get_user_input() -> Vector3:
 	var h = -1 if Input.is_action_pressed("ui_left") else 1 if Input.is_action_pressed("ui_right") else 0
 	var v = -1 if Input.is_action_pressed("ui_up") else 1 if Input.is_action_pressed("ui_down") else 0
 	return Vector3(h, v, Input.is_action_pressed("jump"))
 
+	
 
 
 func get_most_vertical_norm(state: Physics2DDirectBodyState) -> Vector2:
@@ -76,17 +80,22 @@ func get_most_vertical_norm(state: Physics2DDirectBodyState) -> Vector2:
 	if n_norms == 0:
 		return Vector2()
 	if n_norms == 1:
+		all_norms = [state.get_contact_local_normal(0)]
 		return state.get_contact_local_normal(0)
-		
+	all_norms = []
 	var min_norm = null
 	var min_angle = 50000 # any angle will be less than 2PI so whatever
 	var a = 0
 	var n: Vector2
 	for i in range(n_norms):
 		n = state.get_contact_local_normal(i)
+		all_norms.append(n)
 		a = abs(n.angle() + PI/2)
 		if a < min_angle:
 			min_norm = n
 			min_angle = a
+			all_norms[i] =all_norms[0]
+			all_norms[0] = min_norm
+	assert(min_norm == all_norms[0])
 	return min_norm
 			

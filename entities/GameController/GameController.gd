@@ -38,6 +38,11 @@ func _unhandled_input(event):
 func _draw():
 	if drag_mode > 0:
 		draw_line(drag_start, get_global_mouse_position(), lash_create_colour if drag_mode == 1 else lash_cut_colour)
+	
+	if $'Level/Player':
+		var p = $'Level/Player'
+		for i in range(p.all_norms.size()):
+			draw_line(p.position, p.position + p.all_norms[i] * p.JUMP_FORCE * 0.25, Color(255, i * 50, 0))
 		
 func _process(_delta):
 	if drag_mode > 0:
@@ -98,6 +103,7 @@ func set_curr_level_num(lvl: int):
 	curr_level_num = lvl
 	get_tree().queue_delete(curr_level)
 	curr_level = Globals.LEVEL_LIST[curr_level_num].instance()
+	curr_level.set_name('Level')
 	call_deferred('add_child', curr_level) # i got literally 500 errors that told me to do this, no clue why
 		
 func lash_cut(start: Vector2, end: Vector2):
