@@ -54,7 +54,6 @@ func _process(delta):
 			curr_force = (pb2.position - pb1.position).normalized() * min_strength * delta
 		else:
 			var final_strength = max(min_strength* delta, pb1.position.distance_to(pb2.position) * strength * delta) 
-			print(final_strength)
 			curr_force = (pb2.position - pb1.position).normalized() * final_strength
 		
 		if pb1 is RigidBody2D:

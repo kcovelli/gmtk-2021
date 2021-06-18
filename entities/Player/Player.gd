@@ -47,7 +47,6 @@ func _integrate_forces(state: Physics2DDirectBodyState) -> void:
 	if is_lashing:
 		rb.angular_damp = LASHING_ANGULAR_DAMP
 		rb.linear_damp = LASHING_LINEAR_DAMP
-		print("player lashing")
 	elif grounded:
 		rb.angular_damp = GROUND_ANGULAR_DAMP
 		rb.linear_damp = GROUND_LINEAR_DAMP
