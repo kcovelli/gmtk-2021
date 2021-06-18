@@ -1,9 +1,8 @@
 extends "res://entities/LashableObjects/LashableObject.gd"
 
-
 # Default movement values.
 const GROUND_UNITS_PER_FRAME = 50
-const AIR_UNITS_PER_FRAME = 5
+const AIR_UNITS_PER_FRAME = 40
 const LASHED_UNITS_PER_FRAME = 25 # TODO: implement and test value
 const JUMP_FORCE = 300
 
@@ -12,7 +11,7 @@ const GROUND_LINEAR_DAMP = 0.1
 const GROUND_ANGULAR_DAMP = 5
 const AIRIAL_LINEAR_DAMP = 0.1
 const AIRIAL_ANGULAR_DAMP = 5
-const LASHING_LINEAR_DAMP = 1
+const LASHING_LINEAR_DAMP = 2
 const LASHING_ANGULAR_DAMP = 8
 
 # Maximum speed that can be contributed by user input
@@ -56,18 +55,17 @@ func _integrate_forces(state: Physics2DDirectBodyState) -> void:
 		rb.angular_damp = AIRIAL_ANGULAR_DAMP
 		rb.linear_damp = AIRIAL_LINEAR_DAMP
 	
-		
-	
+	# TODO: allocating all of these temp variables every frame is really bad
 	# get user input, up/down not used for anything currently
 	var input := get_user_input()
 	var user_influence := Vector2(input[0], 0) * (GROUND_UNITS_PER_FRAME if grounded else AIR_UNITS_PER_FRAME)
 	var jump: bool = input[2]
 
 	var velocity = state.get_linear_velocity()
-	
+	var vel_x = velocity[0]
+
 	# only apply the velocity from user input if total velocity is less than the max, or applying it would slow us down
-	# TODO: technically we should keep track of how much speed has been added by user and check against that separately 
-	if velocity.length_squared() < MAX_USER_SPEED_SQ or (velocity + user_influence).length_squared() < last_total_velocity.length_squared():
+	if abs(vel_x) < MAX_USER_SPEED or (velocity + user_influence).length_squared() < last_total_velocity.length_squared():
 		velocity += user_influence
 
 	state.set_linear_velocity(velocity)
@@ -82,7 +80,7 @@ func _integrate_forces(state: Physics2DDirectBodyState) -> void:
 	
 	if Globals.DRAW_DEBUG_NORMS:
 		$'/root/Main'.update()
-
+	
 func get_user_input() -> Vector3:
 	var h = -1 if Input.is_action_pressed("ui_left") else 1 if Input.is_action_pressed("ui_right") else 0
 	var v = -1 if Input.is_action_pressed("ui_up") else 1 if Input.is_action_pressed("ui_down") else 0
